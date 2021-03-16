@@ -1,0 +1,13 @@
+{
+  "name": "BevilaquaIO",
+  "version": "1.0.0",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/dennybevilaqua/BevilaquaIO.git"
+  },
+  "description": "BevilaquaIO",
+  "keywords": "Tasks,Blink",
+  "frameworks": "*",
+  "platforms": "*"
+}

@@ -34,7 +34,7 @@ void Task::add(CallbackType call, int timeA)
     tasks[numTasks] = task;
 }
 
-void Task::seed()
+void Task::loop()
 {
     for (short i = 0; i < numTasks; i++)
     {

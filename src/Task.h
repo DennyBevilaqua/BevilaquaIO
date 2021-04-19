@@ -13,6 +13,6 @@ class Task
     public:
         Task(CallbackType call = 0, int timeA = 0);
         void add(CallbackType call, int timeA);
-        void seed();
+        void loop();
         Task* getTask(int i);
 };

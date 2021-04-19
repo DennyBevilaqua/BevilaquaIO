@@ -9,7 +9,6 @@ void LogWebServerClass::home(AsyncWebServerRequest *request) {
 }
 
 void LogWebServerClass::log(String msg) {
-    
 }
 
 

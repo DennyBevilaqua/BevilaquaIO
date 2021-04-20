@@ -1,69 +1,68 @@
+#ifndef Task_h
+#define Task_h
+
 #include "Arduino.h"
 
-class Task
+class TaskClass
 {
-private:
+
+public:
     typedef void (*CallbackType)(void);
-    short numTasks;
-    int time;
-    unsigned long lastRun;
+    int interval;
+    unsigned long nextRun;
     CallbackType callback;
-    Task *tasks[];
+
+    void set (CallbackType call, int intervalA)
+    {
+        callback = call;
+        interval = intervalA;
+        nextRun = 0;
+    }
+
     void execute()
     {
         callback();
     }
+};
+
+class TaskMan
+{
+private:
+    short numTasks;
+    TaskClass *tasks[10];
 
 public:
-    Task(CallbackType call = 0, int timeA = 0)
+    TaskMan()
     {
-        callback = call;
-        time = timeA;
-        lastRun = 0;
         numTasks = 0;
-        *tasks = new Task[0];
+        *tasks = new TaskClass[10];
     }
 
-    void add(CallbackType call, int timeA)
+    void add(TaskClass::CallbackType call, int intervalA)
     {
-        Task *task = new Task(call, timeA);
-        auto oTasks = *tasks;
-        *tasks = new Task[numTasks + 1];
-
-        for (short i = 0; i < numTasks; i++)
-        {
-            Task *t = &oTasks[i];
-            tasks[i] = t;
-        }
-
-        tasks[numTasks] = task;
+        tasks[numTasks]->set(call, intervalA);
         numTasks++;
-
-        task->lastRun = 0;
-        tasks[numTasks] = task;
     }
 
     void loop()
     {
         for (short i = 0; i < numTasks; i++)
         {
-            Task *c = getTask(i);
-            unsigned long cTime = millis();
-            unsigned long nTime = c->lastRun + c->time;
+            TaskClass *c = getTask(i);
 
-            if (c->lastRun == 0)
-                nTime = 0;
-
-            if (cTime >= nTime)
+            if (c->nextRun <= millis())
             {
-                c->lastRun = cTime;
+                c->nextRun += c->interval;
                 c->execute();
             }
         }
     }
 
-    Task *getTask(int i)
+    TaskClass *getTask(int i)
     {
         return tasks[i];
     }
 };
+
+TaskMan Tasks;
+#endif
